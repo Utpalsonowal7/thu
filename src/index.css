@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+     --color-brand: #d97706;
+     --color-brand-hover: #b45309;
+
+     --color-background: #ffffff;
+     --color-foreground: #18181b;
+
+     --color-card: #ffffff;
+     --color-card-foreground: #18181b;
+
+     --color-muted: #71717a;
+     --color-border: #e4e4e7;
+
+     --color-input: #ffffff;
+     --color-input-border: #d4d4d8;
+}
+
+.dark {
+     --color-background: #09090b;
+     --color-foreground: #fafafa;
+
+     --color-card: #18181b;
+     --color-card-foreground: #fafafa;
+
+     --color-muted: #a1a1aa;
+     --color-border: #27272a;
+
+     --color-input: #27272a;
+     --color-input-border: #3f3f46;
+}
+
