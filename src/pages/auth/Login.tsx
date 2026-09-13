@@ -1,8 +1,47 @@
 import ThemeToggle from "@/components/ThemeToggle";
 import { BsGithub, BsGoogle } from "react-icons/bs";
+import React, { useState } from "react";
+import type { login } from "@/types/auth";
+import userlogin from "@/services/auth";
+import { AxiosError } from "axios";
 
 
 function Login() {
+     const [form, setForm] = useState<login>({
+          email: "",
+          password: "",
+     });
+     const [loading, setLoading] = useState<boolean>(false);
+     const [err, setErr] = useState<string | null>(null);
+
+     const handleChage = (e: React.ChangeEvent<HTMLInputElement>) => {
+          const { value, name } = e.target;
+
+          setForm((pre) => ({
+               ...pre,
+               [name]: value,
+          }));
+     };
+
+     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+          e.preventDefault();
+
+          if (loading) return;
+
+          setLoading(true);
+
+          try {
+               const res = await userlogin(form);
+
+               console.log(res);
+          } catch (err) {
+               const e = err as AxiosError<{ message?: string }>
+               setErr(e.response?.data?.message ?? "something went wrong")
+          } finally {
+               setLoading(false);
+          }
+     };
+
      return (
           <div className="min-h-screen bg-background text-foreground">
                {" "}
@@ -51,7 +90,19 @@ function Login() {
                                         Sign in to your account to
                                         continue.{" "}
                                    </p>{" "}
-                                   <form className="mt-8 space-y-5">
+
+                                   {err && (
+                                        <div
+                                             role="alert"
+                                             className=" mt-5 rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-2 text-sm text-red-500  "
+                                        >
+                                             {err}
+                                        </div>
+                                   )}
+                                   <form
+                                        className="mt-8 space-y-3"
+                                        onSubmit={handleSubmit}
+                                   >
                                         {" "}
                                         <div>
                                              {" "}
@@ -66,6 +117,8 @@ function Login() {
                                                   id="email"
                                                   name="email"
                                                   type="email"
+                                                  value={form.email}
+                                                  onChange={handleChage}
                                                   placeholder="you@example.com"
                                                   className="w-full rounded-lg border border-input-border bg-input px-4 py-3 text-foreground outline-none transition placeholder:text-muted focus:border-brand"
                                              />{" "}
@@ -93,6 +146,8 @@ function Login() {
                                                   id="password"
                                                   name="password"
                                                   type="password"
+                                                  value={form.password}
+                                                  onChange={handleChage}
                                                   placeholder="••••••••"
                                                   className="w-full rounded-lg border border-input-border bg-input px-4 py-3 text-foreground outline-none transition placeholder:text-muted focus:border-brand"
                                              />{" "}
