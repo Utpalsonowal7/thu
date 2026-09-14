@@ -6,15 +6,17 @@ import type {
 } from "axios";
 
 const api: AxiosInstance = axios.create({
-     baseURL: "/api",
+     baseURL: import.meta.env.VITE_API_URL,
      timeout: 30000,
      withCredentials: true,
 });
 
 const refreshEndpointApi: AxiosInstance = axios.create({
-     baseURL: "/api",
+     baseURL: import.meta.env.VITE_API_URL,
      withCredentials: true,
 });
+
+const publicRoutes = ["/","/login", "/register", "/er"];
 
 interface FailedQueueResponse {
      resolve: () => void;
@@ -48,10 +50,11 @@ api.interceptors.response.use(
                | RetryableAxiosConfig
                | undefined;
 
+        
           if (
                error.response?.status !== 401 ||
                !originalRequest ||
-               originalRequest._retry
+               originalRequest._retry 
           ) {
                return Promise.reject(error);
           }
@@ -69,7 +72,7 @@ api.interceptors.response.use(
           isRefreshing = true;
 
           try {
-               await refreshEndpointApi.post("/auth/refresh-token");
+               await refreshEndpointApi.post("/auth/refresh");
 
                processQueue(null);
 
@@ -77,8 +80,8 @@ api.interceptors.response.use(
           } catch (refreshError) {
                processQueue(refreshError);
 
-               if (window.location.pathname !== "/login") {
-                    window.location.replace("/login");
+               if (!publicRoutes.includes(window.location.pathname)) {
+                    window.location.replace("/");
                }
 
                return Promise.reject(refreshError);

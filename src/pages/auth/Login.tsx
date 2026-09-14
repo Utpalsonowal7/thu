@@ -1,18 +1,21 @@
 import ThemeToggle from "@/components/ThemeToggle";
-import { BsGithub, BsGoogle } from "react-icons/bs";
+import { BsEye, BsEyeSlash, BsGithub, BsGoogle } from "react-icons/bs";
 import React, { useState } from "react";
+
 import type { login } from "@/types/auth";
 import userlogin from "@/services/auth";
 import { AxiosError } from "axios";
 
 
 function Login() {
+     
      const [form, setForm] = useState<login>({
           email: "",
           password: "",
      });
      const [loading, setLoading] = useState<boolean>(false);
      const [err, setErr] = useState<string | null>(null);
+     const [showPass, setShowPass] = useState<boolean>(false);
 
      const handleChage = (e: React.ChangeEvent<HTMLInputElement>) => {
           const { value, name } = e.target;
@@ -31,16 +34,24 @@ function Login() {
           setLoading(true);
 
           try {
-               const res = await userlogin(form);
-
-               console.log(res);
+               await userlogin(form);
+               console.log("LOGIN SUCCESS:");
+               window.location.href = "/dashboard";
           } catch (err) {
-               const e = err as AxiosError<{ message?: string }>
-               setErr(e.response?.data?.message ?? "something went wrong")
+               const e = err as AxiosError<{ message?: string }>;
+               setErr(e.response?.data?.message ?? "something went wrong");
           } finally {
                setLoading(false);
           }
      };
+
+ const handleGoogleLogIn = () => {
+      window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
+ };
+
+ const handleGithubLogIn = () => {
+      window.location.href = `${import.meta.env.VITE_API_URL}/auth/github`;
+ };
 
      return (
           <div className="min-h-screen bg-background text-foreground">
@@ -90,7 +101,6 @@ function Login() {
                                         Sign in to your account to
                                         continue.{" "}
                                    </p>{" "}
-
                                    {err && (
                                         <div
                                              role="alert"
@@ -142,15 +152,48 @@ function Login() {
                                                        Forgot password?{" "}
                                                   </a>{" "}
                                              </div>{" "}
-                                             <input
-                                                  id="password"
-                                                  name="password"
-                                                  type="password"
-                                                  value={form.password}
-                                                  onChange={handleChage}
-                                                  placeholder="••••••••"
-                                                  className="w-full rounded-lg border border-input-border bg-input px-4 py-3 text-foreground outline-none transition placeholder:text-muted focus:border-brand"
-                                             />{" "}
+                                             <div className="relative">
+                                                  <input
+                                                       id="password"
+                                                       name="password"
+                                                       type={
+                                                            showPass
+                                                                 ? "text"
+                                                                 : "password"
+                                                       }
+                                                       value={form.password}
+                                                       onChange={handleChage}
+                                                       placeholder="••••••••"
+                                                       required
+                                                       autoComplete="current-password"
+                                                       disabled={loading}
+                                                       className="w-full rounded-lg border border-input-border bg-input px-4 py-3 pr-12 text-foreground outline-none transition placeholder:text-muted focus:border-brand disabled:cursor-not-allowed disabled:opacity-60"
+                                                  />
+
+                                                  <button
+                                                       type="button"
+                                                       aria-label={
+                                                            showPass
+                                                                 ? "Hide password"
+                                                                 : "Show password"
+                                                       }
+                                                       onClick={() =>
+                                                            setShowPass(
+                                                                 (prev) =>
+                                                                      !prev,
+                                                            )
+                                                       }
+                                                       className="absolute right-3 top-1/2 -translate-y-1/2 text-muted transition hover:text-foreground"
+                                                  >
+                                                       {showPass ? (
+                                                            <BsEyeSlash
+                                                                 size={18}
+                                                            />
+                                                       ) : (
+                                                            <BsEye size={18} />
+                                                       )}
+                                                  </button>
+                                             </div>
                                         </div>{" "}
                                         <button
                                              type="submit"
@@ -172,6 +215,7 @@ function Login() {
                                    <button
                                         type="button"
                                         className="flex w-full items-center justify-center gap-3 rounded-lg border border-border py-3 font-medium transition hover:bg-border"
+                                        onClick={handleGoogleLogIn}
                                    >
                                         {" "}
                                         <BsGoogle /> Continue with Google{" "}
@@ -179,6 +223,7 @@ function Login() {
                                    <button
                                         type="button"
                                         className="mt-3 flex w-full items-center justify-center gap-3 rounded-lg border border-border py-3 font-medium transition hover:bg-border"
+                                        onClick={handleGithubLogIn}
                                    >
                                         {" "}
                                         <BsGithub /> Continue with GitHub{" "}

@@ -14,3 +14,22 @@ export async function getCurrentUser() {
 export async function logoutUser() {
      await api.post("/auth/logout");
 }
+
+export async function sendRegisterOtp(email: string): Promise<void> {
+     await api.post("/auth/send-otp", { email });
+}
+
+export async function verifyRegisterOtp(
+     email: string,
+     otp: string,
+): Promise<void> {
+     await api.post("/auth/verify-otp", { email, otp });
+}
+
+export async function registerUser(data: {
+     email: string;
+     name: string;
+     password: string;
+}): Promise<void> {
+     await api.post("/auth/register", data);
+}

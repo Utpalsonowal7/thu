@@ -8,8 +8,8 @@ export interface User {
      id: string;
      name: string;
      email: string;
-     role: string;
      avatar: string | null;
+     isVarified: boolean
 }
 
 export interface LoginResponse {
@@ -20,7 +20,6 @@ export interface AuthContextType {
      user: User | null;
      loading: boolean;
      isAuthenticated: boolean;
-     login: (user: User) => void;
      logout: () => Promise<void>;
 }
 
