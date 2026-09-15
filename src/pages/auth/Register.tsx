@@ -139,10 +139,10 @@ function Register() {
     };
 
      const handleGoogleLogIn = () => {
-          window.location.href = "/api/auth/google";
+      window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
      };
      const handleGithubLogIn = () => {
-          window.location.href = "/api/auth/github";
+      window.location.href = `${import.meta.env.VITE_API_URL}/auth/github`;
      };
     return (
          <main className="min-h-screen bg-background text-foreground">

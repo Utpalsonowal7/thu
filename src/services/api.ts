@@ -81,7 +81,7 @@ api.interceptors.response.use(
                processQueue(refreshError);
 
                if (!publicRoutes.includes(window.location.pathname)) {
-                    window.location.replace("/");
+                    window.location.replace("/login");
                }
 
                return Promise.reject(refreshError);
