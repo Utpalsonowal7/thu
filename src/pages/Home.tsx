@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Home() {
-     const { isAuthenticated, user } = useAuth();
+     const { isAuthenticated } = useAuth();
      
-     console.log(user)
 
     return (
         <main className="min-h-screen bg-background text-foreground">
+            <ThemeToggle/>
            
             <section className="mx-auto max-w-7xl px-4 pb-20 pt-20 sm:px-6 lg:px-8 lg:pt-28">
                 <div className="mx-auto max-w-3xl text-center">

@@ -188,7 +188,7 @@ function Register() {
                         </div>
 
                         <div className="w-full max-w-md">
-                             {/* Mobile logo */}
+                            
                              <div className="mb-10 lg:hidden">
                                   <Link
                                        to="/"
@@ -259,7 +259,6 @@ function Register() {
                                   </div>
                              )}
 
-                             {/* STEP 1: EMAIL */}
                              {step === "email" && (
                                   <form
                                        onSubmit={handleEmailSubmit}

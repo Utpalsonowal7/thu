@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { IoLogInOutline } from "react-icons/io5";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Dashboard() {
      const { user, logout } = useAuth();
@@ -8,7 +9,6 @@ export default function Dashboard() {
      return (
           <main className="min-h-screen bg-background text-foreground">
                <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-                    {/* Header */}
                     <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                          <div>
                               <p className="text-sm text-muted-foreground">
@@ -26,11 +26,14 @@ export default function Dashboard() {
                          >
                               Back to Home
                          </Link>
-
-                         <IoLogInOutline size={30} className="cursor-pointer" onClick={logout}/>
+                         <ThemeToggle />
+                         <IoLogInOutline
+                              size={30}
+                              className="cursor-pointer"
+                              onClick={logout}
+                         />
                     </div>
 
-                    {/* Quick Stats */}
                     <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                          <div className="rounded-xl border border-border bg-card p-5">
                               <p className="text-sm text-muted-foreground">
@@ -75,9 +78,7 @@ export default function Dashboard() {
                          </div>
                     </section>
 
-                    {/* Main Content */}
                     <section className="mt-8 grid gap-6 lg:grid-cols-3">
-                         {/* Recent Activity */}
                          <div className="rounded-xl border border-border bg-card p-6 lg:col-span-2">
                               <div className="flex items-center justify-between">
                                    <div>
@@ -103,7 +104,6 @@ export default function Dashboard() {
                               </div>
                          </div>
 
-                         {/* Quick Actions */}
                          <div className="rounded-xl border border-border bg-card p-6">
                               <h2 className="text-lg font-semibold">
                                    Quick Actions
